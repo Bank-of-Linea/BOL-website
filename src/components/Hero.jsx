@@ -58,6 +58,11 @@ const Hero = () => {
           name="Chart"
           link="https://bankoflinea.build"
         />
+        <Button
+        styles={'ml-6'}
+          name="Bridge to Linea"
+          link="https://bridge.linea.build/"
+        />
         
       </div>
 
