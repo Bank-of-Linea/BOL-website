@@ -17,7 +17,7 @@ const Stats = () => {
     <section
       className={`${styles.flexCenter} flex-row flex-wrap sm:mb-20 mb-6`}
     >
-      <span className="ml-2 mr-2 text-green-400 text-sm">$BOL CA</span>
+      <span className="ml-2 mr-2 text-green-400 text-sm">BOL CA</span>
       <div className="bg-gray-800 text-white p-4 rounded-lg flex items-center">
         <span className="mr-2 text-[11px] max-w-[700px]">{tokenAddress}</span>
         <FaRegCopy

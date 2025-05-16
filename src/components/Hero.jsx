@@ -15,7 +15,7 @@ const Hero = () => {
         <div className="flex flex-row items-center py-2 px-3 rounded-lg mb-4 bg-gray-800/50">
           <p className={`${styles.paragraph} ml-2 uppercase`}>
             <span className="text-white font-extrabold italic text-3xl sm:text-4xl md:text-5xl">
-              $BOL
+              BOL
             </span>
           </p>
         </div>
@@ -23,10 +23,10 @@ const Hero = () => {
         <p
           className={`${styles.paragraph} max-w-[90%] sm:max-w-[470px] mt-4 text-base sm:text-lg md:text-xl text-white font-['Sintony',_sans-serif] leading-relaxed`}
         >
-          Bank of Linea ($BOL) – The Community-Driven Meme Coin That Rewards You!
-          Bank of Linea ($BOL) isn’t just another memecoin—it’s a
+          Bank of Linea (BOL) – The Community-Driven Meme Coin That Rewards You!
+          Bank of Linea (BOL) isn’t just another memecoin—it’s a
           community-powered project with a unique reflection mechanism that
-          rewards holders of $BOL in $USDC on Linea L2. Our mission is simple: help you
+          rewards holders of BOL in ETH on Linea L2. Our mission is simple: help you
           maximize your earnings by providing a system where you can earn passive
           rewards. Join us on this moon-bound journey and become part of a
           thriving community of crypto enthusiasts who share your passion!

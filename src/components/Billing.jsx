@@ -37,11 +37,11 @@ const Billing = () => (
       <p
         className={`${styles.paragraph} max-w-[90%] sm:max-w-[470px] mt-4 text-base sm:text-lg md:text-xl text-white leading-relaxed`}
       >
-        Bank of Linea ($BOL) – The First Reflection Meme Token on Linea L2! Get
-        rewarded just for holding! Bank of Linea ($BOL) is the first reflection
-        meme token on the Linea L2 blockchain, automatically airdropping $USDC to
+        Bank of Linea (BOL) – The First Reflection Meme Token on Linea L2! Get
+        rewarded just for holding! Bank of Linea (BOL) is the first reflection
+        meme token on the Linea L2 blockchain, automatically airdropping ETH to
         holders on Linea’s network. Ready to join the fun and earn while you HODL
-        $BOL? Jump in now!
+        BOL? Jump in now!
       </p>
 
       {/* Uncomment if needed */}
