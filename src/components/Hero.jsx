@@ -33,7 +33,7 @@ const Hero = () => {
         </p>
 
         <div className={`mt-6 ${styles.flexCenter} flex-wrap gap-3 sm:gap-4`}>
-          <Button name="Buy" link="https://bankoflinea.build/" />
+          <Button name="Buy" link="https://app.lynex.fi/swap?inputCurrency=ETH&outputCurrency=0xb171EF5cD8d320D52F257924A0E0d41E6f5c40D9&swapType=1" />
           <Button
             styles={'ml-0 sm:ml-4 mt-2 sm:mt-0'}
             name="Chart"
