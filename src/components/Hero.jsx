@@ -37,7 +37,7 @@ const Hero = () => {
           <Button
             styles={'ml-0 sm:ml-4 mt-2 sm:mt-0'}
             name="Chart"
-            link="https://bankoflinea.build"
+            link="https://dexscreener.com/linea/0x6de1c7ea1524b7dd0a9804fec3a60c06545223ac"
           />
           <Button
             styles={'ml-0 sm:ml-4 mt-2 sm:mt-0'}
