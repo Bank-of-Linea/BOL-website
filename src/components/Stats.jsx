@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaRegCopy } from "react-icons/fa"; // Import copy icon
 import styles from "../style";
 
-const tokenAddress = "COMING SOON!"; // Replace with actual token address
+const tokenAddress = "0xb171EF5cD8d320D52F257924A0E0d41E6f5c40D9"; // Replace with actual token address
 
 const Stats = () => {
   const [copied, setCopied] = useState(false);
