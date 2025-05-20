@@ -33,7 +33,7 @@ const Hero = () => {
         </p>
 
         <div className={`mt-6 ${styles.flexCenter} flex-wrap gap-3 sm:gap-4`}>
-          <Button name="Buy" link="https://app.lynex.fi/swap?inputCurrency=ETH&outputCurrency=0xb171EF5cD8d320D52F257924A0E0d41E6f5c40D9&swapType=1" />
+          <Button name="Buy" link="https://kyberswap.com/partner-swap?chainId=59144&inputCurrency=0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f&outputCurrency=0xb171EF5cD8d320D52F257924A0E0d41E6f5c40D9&clientId=dexscreener&feeReceiver=0x0DA2a82ED2c387d1751ccbAf999A80b65bdb269E&enableTip=true&chargeFeeBy=currency_out&feeAmount=30&preferredFeeTokens=0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f" />
           <Button
             styles={'ml-0 sm:ml-4 mt-2 sm:mt-0'}
             name="Chart"
