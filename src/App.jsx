@@ -1,18 +1,9 @@
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 import styles from "./style";
-import {
-  Billing,
-  Business,
-  Linea,
-  CardDeal,
-  Clients,
-  CTA,
-  Footer,
-  Navbar,
-  Stats,
-  Testimonials,
-  Hero,
-} from "./components";
-import { logo } from "./assets";
+import { Navbar } from "./components";
+import Home from "./pages/home";
+import LiquidityManager from "./pages/LiquidityManager";
 
 const App = () => (
   <div className="bg-primary w-full overflow-hidden relative">
@@ -22,25 +13,10 @@ const App = () => (
       </div>
     </div>
 
-    <div className={`bg-primary ${styles.flexStart}`}>
-      <div className={`${styles.boxWidth}`}>
-        <Hero />
-      </div>
-    </div>
-
-    <div className={`${styles.paddingX} ${styles.flexCenter}`}>
-      <div className={`${styles.boxWidth}`}>
-        <Stats />
-        <Billing />
-        {/*  <CardDeal /> */}
-        <Linea />
-        {/* <Clients /> */}
-        {/* <CTA /> */}
-        <Business />
-        <Testimonials />
-        <Footer />
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/app" element={<LiquidityManager />} />
+    </Routes>
   </div>
 );
 

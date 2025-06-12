@@ -2,8 +2,9 @@ import { facebook, instagram, linktree, telegram, twitter, airbnb, binance, coin
 
 export const navLinks = [
   {
-    id: "home",
+    id: "/",
     title: "Home",
+    type: "route",
   },
   {
     id: "product",
@@ -18,8 +19,9 @@ export const navLinks = [
     title: "About",
   },
   {
-    id: "linea",
-    title: "Bridge",
+    id: "app",
+    title: "App",
+    type: "route",
   },
 
 ];

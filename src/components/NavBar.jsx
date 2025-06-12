@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { close, logo, menu } from '../assets';
 import { navLinks } from '../constants';
 
@@ -23,7 +24,7 @@ const NavBar = () => {
 
       <ul className="list-none hidden sm:flex justify-end items-center flex-1 gap-4 md:gap-8">
         {navLinks.map((el) => {
-          const isActive = el.id === activeLink;
+          const isActive = el.id === activeLink || el.id === window.location.pathname;
           return (
             <li
               key={el.id}
@@ -32,7 +33,11 @@ const NavBar = () => {
               }`}
               onClick={() => setActiveLink(el.id)}
             >
-              <a href={`#${el.id}`}>{el.title}</a>
+              {el.type === 'route' ? (
+  <Link to={el.id}>{el.title}</Link>
+) : (
+  <a href={`#${el.id}`}>{el.title}</a>
+)}
             </li>
           );
         })}
@@ -53,7 +58,7 @@ const NavBar = () => {
         >
           <ul className="list-none flex flex-col justify-end items-start flex-1">
             {navLinks.map((el) => {
-              const isActive = el.id === activeLink;
+              const isActive = el.id === activeLink || el.id === window.location.pathname;
               return (
                 <li
                   key={el.id}
@@ -65,7 +70,11 @@ const NavBar = () => {
                     setToggle(false);
                   }}
                 >
-                  <a href={`#${el.id}`}>{el.title}</a>
+                  {el.type === 'route' ? (
+  <Link to={el.id}>{el.title}</Link>
+) : (
+  <a href={`#${el.id}`}>{el.title}</a>
+)}
                 </li>
               );
             })}
