@@ -98,3 +98,55 @@ export const transferETHLinea = async (signer, ethAmount) => {
   await tx.wait();
   return tx;
 };
+
+
+// Discount Contract (50% off fee logic)
+const discountContractAddress = "0x99Db88473EB962fD2f1B286082fb621728233D5E";
+
+const discountContractAbi = [
+  "function takeSnapshot() external",
+  "function getSnapshot(address user) external view returns (uint256)",
+  "function swapClaimed() external payable",
+  "function getTradeDiscount() external view returns (uint256)"
+];
+
+
+
+export const takeSnapshot = async (signer) => {
+  try {
+    const contract = new ethers.Contract(discountContractAddress, discountContractAbi, signer);
+    const tx = await contract.takeSnapshot();
+    await tx.wait();
+    return { success: true };
+  } catch (error) {
+    console.error("❌ Snapshot error:", error);
+
+    // Optional: return a custom error object
+    return {
+      success: false,
+      message:
+        error?.reason ||
+        error?.data?.message ||
+        error?.message ||
+        "An unknown error occurred while taking snapshot.",
+    };
+  }
+};
+
+export const getSnapshotValue = async (provider, userAddress) => {
+  const contract = new ethers.Contract(discountContractAddress, discountContractAbi, provider);
+  const value = await contract.getSnapshot(userAddress);
+  return ethers.formatEther(value);
+};
+
+export const swapClaimedToBOL = async (signer, snapshotValue) => {
+  const contract = new ethers.Contract(discountContractAddress, discountContractAbi, signer);
+  const tx = await contract.swapClaimed({ value: ethers.parseEther(snapshotValue.toString()) });
+  await tx.wait();
+};
+
+export const getTradeDiscount = async (provider) => {
+  const contract = new ethers.Contract(discountContractAddress, discountContractAbi, provider);
+  const discount = await contract.getTradeDiscount();
+  return discount;
+};
