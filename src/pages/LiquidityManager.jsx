@@ -5,6 +5,7 @@ import AddLiquidity from "./components/AddLiquidity";
 import RemoveLiquidity from "./components/RemoveLiquidity";
 import BuyBase from "./components/BuyBase";
 import BuyLinea from "./components/BuyLinea";
+import SellBOL from "./components/SellBOL";
 
 const BASE_CHAIN_ID = "0x2105"; // Base Mainnet (8453) in hex
 const LINEA_CHAIN_ID = "0xe708"; // Linea Mainnet (59144) in hex
@@ -77,8 +78,9 @@ const LiquidityManager = () => {
                 <option value="claim">Claim Dividends</option>
                 <option value="add">Add Liquidity</option>
                 <option value="remove">Remove Liquidity</option>
-                <option value="buy-base">Buy Using ETH on Base</option>
-                <option value="buy-linea">Buy Using ETH on Linea</option>
+                <option value="buy-base">Buy BOL Using ETH on Base</option>
+                <option value="buy-linea">Buy BOL Using ETH on Linea</option>
+                <option value="sell-bol">Sell BOL for ETH on Linea</option>
               </select>
             </div>
 
@@ -105,6 +107,9 @@ const LiquidityManager = () => {
             )}
             {action === "buy-linea" && !needsSwitchToLinea && (
               <BuyLinea provider={provider} signer={signer} address={address} />
+            )}
+            {action === "sell-bol" && !needsSwitchToLinea && (
+              <SellBOL provider={provider} signer={signer} address={address} />
             )}
           </div>
         )}

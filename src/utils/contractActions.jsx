@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 const dividendContractAddress = "0xb171EF5cD8d320D52F257924A0E0d41E6f5c40D9";
 const liquidityContractAddress = "0x1BCCbE117F0555e416A811411d8D61611Fd6Ec48";
 const lpTokenAddress = "0x6De1c7ea1524b7DD0A9804FEc3a60c06545223AC";
+const sellbolcontract = "0xfDFB99FB121140931C63bB205423Ef644f921427";
 
 // ABIs
 const dividendContractAbi = [
@@ -22,11 +23,44 @@ const erc20Abi = [
   "function balanceOf(address owner) view returns (uint256)"
 ];
 
+const sellbolcontractAbi = [
+  "function swapFromUserToETH(uint amountIn) external",
+];
+
 // --- Fetch LP Balance ---
 export const fetchLPBalance = async (provider, address) => {
   const contract = new ethers.Contract(lpTokenAddress, erc20Abi, provider);
   const balance = await contract.balanceOf(address);
   return ethers.formatEther(balance);
+};
+
+export const fetchBOLBalance = async (provider, address) => {
+  const contract = new ethers.Contract(dividendContractAddress, erc20Abi, provider);
+  const balance = await contract.balanceOf(address);
+  return ethers.formatEther(balance);
+};
+
+export const sellBOLForETH = async (signer, amount) => {
+  const contract = new ethers.Contract(sellbolcontract, sellbolcontractAbi, signer);
+  const parsedAmount = ethers.parseUnits(amount, 18);
+  const tx = await contract.swapFromUserToETH(parsedAmount);
+  await tx.wait();
+};
+
+// --- Check SELL CONTRACT Approval OF BOL ---
+export const isApprovedForSellBOL = async (signer, owner, amount) => {
+  const parsedAmount = ethers.parseUnits(amount, 18);
+  const contract = new ethers.Contract(dividendContractAddress, erc20Abi, signer);
+  const allowance = await contract.allowance(owner, sellbolcontract);
+  return allowance >= parsedAmount;
+};
+
+// --- Approve BOL Tokens FOR SELL CONTRACT ---
+export const approveSellBOL = async (signer, amount) => {
+  const parsedAmount = ethers.parseUnits(amount, 18);
+  const contract = new ethers.Contract(dividendContractAddress, erc20Abi, signer);
+  const tx = await contract.approve(sellbolcontract, parsedAmount);
+  await tx.wait();
 };
 
 // --- Check LP Approval ---
