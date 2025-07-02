@@ -6,22 +6,25 @@ import RemoveLiquidity from "./components/RemoveLiquidity";
 import BuyBase from "./components/BuyBase";
 import BuyLinea from "./components/BuyLinea";
 import SellBOL from "./components/SellBOL";
+import { fetchtotalrewards } from "../utils/contractActions";
 
 const BASE_CHAIN_ID = "0x2105"; // Base Mainnet (8453) in hex
 const LINEA_CHAIN_ID = "0xe708"; // Linea Mainnet (59144) in hex
 
 const LiquidityManager = () => {
   const {
-  provider,
-  signer,
-  address,
-  connectWallet,
-  disconnectWallet,
-  switchNetwork,
-} = useLineaWallet();
+    provider,
+    signer,
+    address,
+    connectWallet,
+    disconnectWallet,
+    switchNetwork,
+  } = useLineaWallet();
+
   const [action, setAction] = useState("");
   const [chainId, setChainId] = useState("");
-  
+  const [totalRewards, setTotalRewards] = useState("0");
+
   useEffect(() => {
     if (provider) {
       provider.getNetwork().then((network) => {
@@ -34,6 +37,56 @@ const LiquidityManager = () => {
       });
     }
   }, [provider]);
+
+  useEffect(() => {
+    const fetchRewards = async () => {
+      const rewards = await fetchtotalrewards(provider);
+      setTotalRewards(rewards);
+    };
+
+    if (address && provider) {
+      fetchRewards();
+    }
+  }, [address, provider]);
+
+
+  const addBOLToken = async () => {
+  const LINEA_CHAIN_ID = "0xe708"; // Linea Mainnet Chain ID in hex
+  const BOL_ADDRESS = "0xb171EF5cD8d320D52F257924A0E0d41E6f5c40D9";
+  const BOL_SYMBOL = "BOL";
+  const BOL_DECIMALS = 18;
+  const BOL_IMAGE = "https://dd.dexscreener.com/ds-data/tokens/linea/0xb171ef5cd8d320d52f257924a0e0d41e6f5c40d9.png?size=lg&key=d124a7";
+
+  try {
+    const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
+
+    if (currentChainId !== LINEA_CHAIN_ID) {
+      alert("Please switch to the Linea network before adding the BOL token.");
+      return;
+    }
+
+    const wasAdded = await window.ethereum.request({
+      method: "wallet_watchAsset",
+      params: {
+        type: "ERC20",
+        options: {
+          address: BOL_ADDRESS,
+          symbol: BOL_SYMBOL,
+          decimals: BOL_DECIMALS,
+          image: BOL_IMAGE,
+        },
+      },
+    });
+
+    if (wasAdded) {
+      console.log("✅ BOL token added to wallet.");
+    } else {
+      console.log("❌ Token addition rejected by user.");
+    }
+  } catch (error) {
+    console.error("Error adding BOL token:", error);
+  }
+};
 
   const needsSwitchToBase = action === "buy-base" && chainId !== BASE_CHAIN_ID;
   const needsSwitchToLinea = action !== "buy-base" && chainId !== LINEA_CHAIN_ID;
@@ -84,7 +137,6 @@ const LiquidityManager = () => {
               </select>
             </div>
 
-            {/* Show Switch Button if needed */}
             {shouldShowSwitch && (
               <button
                 onClick={() =>
@@ -98,7 +150,6 @@ const LiquidityManager = () => {
               </button>
             )}
 
-            {/* Render Components */}
             {action === "claim" && <ClaimDividends provider={provider} signer={signer} address={address} />}
             {action === "add" && <AddLiquidity provider={provider} signer={signer} address={address} />}
             {action === "remove" && <RemoveLiquidity provider={provider} signer={signer} address={address} />}
@@ -111,6 +162,23 @@ const LiquidityManager = () => {
             {action === "sell-bol" && !needsSwitchToLinea && (
               <SellBOL provider={provider} signer={signer} address={address} />
             )}
+
+            {/* --- Additional UI Section --- */}
+            <div className="mt-6 border-t pt-4">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2 text-center">
+                🎉 Total ETH Rewards Distributed
+              </h3>
+              <p className="text-center text-xl text-green-600 font-bold">
+                {totalRewards} ETH
+              </p>
+
+              <button
+                onClick={addBOLToken}
+                className="mt-4 w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
+              >
+                ➕ Add BOL Token to Wallet
+              </button>
+            </div>
           </div>
         )}
       </div>

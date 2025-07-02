@@ -9,7 +9,8 @@ const sellbolcontract = "0xfDFB99FB121140931C63bB205423Ef644f921427";
 // ABIs
 const dividendContractAbi = [
   "function getUnpaidEarnings(address) view returns (uint256)",
-  "function _claimDividend() external"
+  "function _claimDividend() external",
+  "function totalDividends() view returns (uint256)"
 ];
 
 const liquidityContractAbi = [
@@ -37,6 +38,12 @@ export const fetchLPBalance = async (provider, address) => {
 export const fetchBOLBalance = async (provider, address) => {
   const contract = new ethers.Contract(dividendContractAddress, erc20Abi, provider);
   const balance = await contract.balanceOf(address);
+  return ethers.formatEther(balance);
+};
+
+export const fetchtotalrewards = async (provider) => {
+  const contract = new ethers.Contract(dividendContractAddress, dividendContractAbi, provider);
+  const balance = await contract.totalDividends();
   return ethers.formatEther(balance);
 };
 
