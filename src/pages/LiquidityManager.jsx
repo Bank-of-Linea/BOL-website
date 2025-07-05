@@ -7,6 +7,7 @@ import BuyBase from "./components/BuyBase";
 import BuyLinea from "./components/BuyLinea";
 import SellBOL from "./components/SellBOL";
 import { fetchtotalrewards } from "../utils/contractActions";
+import SellBOLtoBase from "./components/SellBOLtoBase";
 
 const BASE_CHAIN_ID = "0x2105"; // Base Mainnet (8453) in hex
 const LINEA_CHAIN_ID = "0xe708"; // Linea Mainnet (59144) in hex
@@ -134,6 +135,7 @@ const LiquidityManager = () => {
                 <option value="buy-base">Buy BOL Using ETH on Base</option>
                 <option value="buy-linea">Buy BOL Using ETH on Linea</option>
                 <option value="sell-bol">Sell BOL for ETH on Linea</option>
+                <option value="sell-bol-base">Sell BOL for ETH on Base</option>
               </select>
             </div>
 
@@ -161,6 +163,9 @@ const LiquidityManager = () => {
             )}
             {action === "sell-bol" && !needsSwitchToLinea && (
               <SellBOL provider={provider} signer={signer} address={address} />
+            )}
+            {action === "sell-bol-base" && !needsSwitchToLinea && (
+              <SellBOLtoBase provider={provider} signer={signer} address={address} />
             )}
 
             {/* --- Additional UI Section --- */}

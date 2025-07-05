@@ -5,6 +5,7 @@ const dividendContractAddress = "0xb171EF5cD8d320D52F257924A0E0d41E6f5c40D9";
 const liquidityContractAddress = "0x1BCCbE117F0555e416A811411d8D61611Fd6Ec48";
 const lpTokenAddress = "0x6De1c7ea1524b7DD0A9804FEc3a60c06545223AC";
 const sellbolcontract = "0xfDFB99FB121140931C63bB205423Ef644f921427";
+const sellbolbasecontract = "0xc150aeac1c8222387352a328d4b2c12629e7f671";
 
 // ABIs
 const dividendContractAbi = [
@@ -26,6 +27,10 @@ const erc20Abi = [
 
 const sellbolcontractAbi = [
   "function swapFromUserToETH(uint amountIn) external",
+];
+
+const sellbolbasecontractAbi = [
+  "function swapFromUserToBridge(uint amountIn) external",
 ];
 
 // --- Fetch LP Balance ---
@@ -54,6 +59,16 @@ export const sellBOLForETH = async (signer, amount) => {
   await tx.wait();
 };
 
+
+export const sellBOLForETHonBase = async (signer, amount) => {
+  const contract = new ethers.Contract(sellbolbasecontract, sellbolbasecontractAbi, signer);
+  const parsedAmount = ethers.parseUnits(amount, 18);
+  const tx = await contract.swapFromUserToBridge(parsedAmount);
+  await tx.wait();
+};
+
+
+
 // --- Check SELL CONTRACT Approval OF BOL ---
 export const isApprovedForSellBOL = async (signer, owner, amount) => {
   const parsedAmount = ethers.parseUnits(amount, 18);
@@ -74,6 +89,21 @@ export const approveSellBOL = async (signer, amount) => {
 export const isApprovedForLiquidity = async (signer, owner, amount) => {
   const contract = new ethers.Contract(lpTokenAddress, erc20Abi, signer);
   const allowance = await contract.allowance(owner, liquidityContractAddress);
+  return allowance >= amount;
+};
+
+// --- Approve Tokens FOR CONTRACT ---
+export const approveSell_all = async (signer, amount, maincontract, appprovecontract) => {
+  const parsedAmount = ethers.parseUnits(amount, 18);
+  const contract = new ethers.Contract(maincontract || dividendContractAddress , erc20Abi, signer);
+  const tx = await contract.approve(appprovecontract || sellbolbasecontract, parsedAmount);
+  await tx.wait();
+};
+
+// --- Check Approval ---
+export const isApprovedFor_all = async (signer, owner, amount, maincontract, approvecontract) => {
+  const contract = new ethers.Contract(maincontract || dividendContractAddress, erc20Abi, signer);
+  const allowance = await contract.allowance(owner, approvecontract || sellbolbasecontract);
   return allowance >= amount;
 };
 
