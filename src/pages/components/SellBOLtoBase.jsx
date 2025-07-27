@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
-  isApprovedFor_all,
-  approveSell_all,
+  isApprovedFor_alltobase,
+  approveSell_alltobase,
   fetchBOLBalance,
   sellBOLForETHonBase,
 } from "../../utils/contractActions";
@@ -31,7 +31,7 @@ const SellBOLtoBase = ({ provider, signer, address }) => {
       const checkApproval = async () => {
         setCheckingApproval(true);
         try {
-          const isOk = await isApprovedFor_all(signer, address, amount);
+          const isOk = await isApprovedFor_alltobase(signer, address, amount);
           setApproved(isOk);
         } catch (err) {
           console.error("Approval check failed:", err);
@@ -49,7 +49,7 @@ const SellBOLtoBase = ({ provider, signer, address }) => {
   const handleApprove = async () => {
     try {
       setLoading(true);
-      await approveSell_all(signer, amount);
+      await approveSell_alltobase(signer, amount);
       alert("✅ BOL approved for sale.");
       setApproved(true);
     } catch (err) {

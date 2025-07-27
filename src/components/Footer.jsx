@@ -50,6 +50,12 @@ const Footer = () => (
     <div className="w-full flex justify-between items-center md:flex-row flex-col pt-4 border-t-[1px] border-t-[#3F3E45] px-4">
       <p className="font-poppins font-normal text-center text-sm sm:text-base md:text-lg leading-[1.5] text-white">
         Copyright Ⓒ 2025 Bank of Linea. All Rights Reserved.
+        
+      </p>
+
+      <p className="font-poppins font-normal text-center text-sm sm:text-base md:text-lg leading-[1.5] text-white">
+        
+        Contact: devs@bankoflinea.build
       </p>
 
       <div className="flex flex-row md:mt-0 mt-4 gap-3 sm:gap-4">

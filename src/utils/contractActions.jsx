@@ -11,7 +11,8 @@ const sellbolbasecontract = "0xc150aeac1c8222387352a328d4b2c12629e7f671";
 const dividendContractAbi = [
   "function getUnpaidEarnings(address) view returns (uint256)",
   "function _claimDividend() external",
-  "function totalDividends() view returns (uint256)"
+  "function totalDividends() view returns (uint256)",
+  "function totalRewardsDistributed(address) view returns (uint256)"
 ];
 
 const liquidityContractAbi = [
@@ -32,6 +33,15 @@ const sellbolcontractAbi = [
 const sellbolbasecontractAbi = [
   "function swapFromUserToBridge(uint amountIn) external",
 ];
+
+
+// already claimed for user
+export const fetchClaimedAmount = async (provider, address) => {
+  const contract = new ethers.Contract(dividendContractAddress, dividendContractAbi, provider);
+ // const contract = getYourContractInstance(provider);
+  const claimed = await contract.totalRewardsDistributed(address); // Replace with your actual function
+  return ethers.formatEther(claimed); // Convert from wei to ETH
+};
 
 // --- Fetch LP Balance ---
 export const fetchLPBalance = async (provider, address) => {
@@ -87,9 +97,10 @@ export const approveSellBOL = async (signer, amount) => {
 
 // --- Check LP Approval ---
 export const isApprovedForLiquidity = async (signer, owner, amount) => {
+  const parsedAmount = ethers.parseUnits(amount, 18);
   const contract = new ethers.Contract(lpTokenAddress, erc20Abi, signer);
   const allowance = await contract.allowance(owner, liquidityContractAddress);
-  return allowance >= amount;
+  return allowance >= parsedAmount;
 };
 
 // --- Approve Tokens FOR CONTRACT ---
@@ -102,15 +113,33 @@ export const approveSell_all = async (signer, amount, maincontract, appprovecont
 
 // --- Check Approval ---
 export const isApprovedFor_all = async (signer, owner, amount, maincontract, approvecontract) => {
+  const parsedAmount = ethers.parseUnits(amount, 18);
   const contract = new ethers.Contract(maincontract || dividendContractAddress, erc20Abi, signer);
   const allowance = await contract.allowance(owner, approvecontract || sellbolbasecontract);
-  return allowance >= amount;
+  return allowance >= parsedAmount;
+};
+
+// --- Check Approval to base---
+export const isApprovedFor_alltobase = async (signer, owner, amount) => {
+  const parsedAmount = ethers.parseUnits(amount, 18);
+  const contract = new ethers.Contract(dividendContractAddress, erc20Abi, signer);
+  const allowance = await contract.allowance(owner, sellbolbasecontract);
+  return allowance >= parsedAmount;
+};
+
+// --- Approve Tokens FOR CONTRACT to base---
+export const approveSell_alltobase = async (signer, amount) => {
+  const parsedAmount = ethers.parseUnits(amount, 18);
+  const contract = new ethers.Contract(dividendContractAddress , erc20Abi, signer);
+  const tx = await contract.approve(sellbolbasecontract, parsedAmount);
+  await tx.wait();
 };
 
 // --- Approve LP Tokens ---
 export const approveLPToken = async (signer, amount) => {
+  const parsedAmount = ethers.parseUnits(amount, 18);
   const contract = new ethers.Contract(lpTokenAddress, erc20Abi, signer);
-  const tx = await contract.approve(liquidityContractAddress, amount);
+  const tx = await contract.approve(liquidityContractAddress, parsedAmount);
   await tx.wait();
 };
 

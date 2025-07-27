@@ -6,6 +6,7 @@ import {
   swapClaimedToBOL,
   getSnapshotValue,
   getTradeDiscount,
+  fetchClaimedAmount,
 } from "../../utils/contractActions";
 
 const ClaimDividends = ({ provider, signer, address }) => {
@@ -23,12 +24,17 @@ const ClaimDividends = ({ provider, signer, address }) => {
   const [loadingSwap, setLoadingSwap] = useState(false);
 
   const [swapSuccessful, setSwapSuccessful] = useState(false);
+  const [claimedAmount, setClaimedAmount] = useState("0");
 
   useEffect(() => {
     if (provider && address) {
       fetchUnpaidEarnings(provider, address)
         .then(setEarnings)
         .catch(console.error);
+
+      fetchClaimedAmount(provider, address)
+      .then(setClaimedAmount)
+      .catch(console.error);
 
       getTradeDiscount(provider)
         .then((val) => setTradeDiscount(Number(val)))
@@ -42,6 +48,7 @@ const ClaimDividends = ({ provider, signer, address }) => {
       await claimDividends(signer);
       alert("✅ Dividends claimed!");
       setEarnings("0");
+      await fetchClaimedAmount(provider, address).then(setClaimedAmount);
     } catch (err) {
       console.error(err);
       alert("❌ Failed to claim dividends.");
@@ -72,6 +79,7 @@ const ClaimDividends = ({ provider, signer, address }) => {
       setClaimedWithDiscount(true);
       setEarnings("0");
       alert(`✅ Claimed with ${tradeDiscount || 50}% discount using BOL!`);
+      await fetchClaimedAmount(provider, address).then(setClaimedAmount);
     } catch (err) {
       console.error(err);
       alert("❌ Failed to claim with discount.");
@@ -100,9 +108,18 @@ const ClaimDividends = ({ provider, signer, address }) => {
 
 return (
   <div className="max-w-md mx-auto p-4 bg-white rounded-xl shadow-lg space-y-4">
-    <p className="text-center text-lg font-semibold">
+    {/*<p className="text-center text-lg font-semibold">
       🎉 You have <span className="text-green-600">{earnings}</span> ETH available to claim
-    </p>
+    </p>*/}
+    <p className="text-center text-lg font-semibold">
+  🎉 You have <span className="text-green-600">{earnings}</span> ETH available to claim
+</p>
+
+{claimedAmount !== "0" && (
+  <p className="text-center text-sm text-gray-700">
+    💰 Already claimed: <span className="font-medium text-purple-700">{claimedAmount}</span> ETH
+  </p>
+)}
 
     {/* Quick Claim */}
     <button
