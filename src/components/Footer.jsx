@@ -3,7 +3,7 @@ import { logo } from "../assets";
 import { footerLinks, socialMedia } from "../constants";
 
 const Footer = () => (
-  <section className={`${styles.flexCenter} ${styles.paddingY} flex-col w-full`}>
+  <footer className={`${styles.flexCenter} ${styles.paddingY} flex-col w-full`}>
     <div
       className={`${styles.flexStart} md:flex-row flex-col mb-6 w-full pt-4 border-t-[6px] border-t-[#3F3E45]`}
     >
@@ -11,7 +11,8 @@ const Footer = () => (
         <img
           src={logo}
           alt="Bank of Linea"
-          className="w-full max-w-[300px] sm:max-w-[400px] h-auto object-contain"
+          className="w-full max-w-[50px] sm:max-w-[100px] h-auto object-contain"
+          loading="lazy"
         />
         <p
           className={`${styles.paragraph} mt-3 max-w-[90%] sm:max-w-[600px] text-base sm:text-lg md:text-xl text-white`}
@@ -21,12 +22,9 @@ const Footer = () => (
       </div>
 
       {/* Uncomment and make responsive if needed */}
-      {/* <div className="flex-[1.5] w-full flex flex-row justify-center flex-wrap md:mt-0 mt-8 px-4">
+      {/* <div className="flex-[1.5] w-full flex flex-row justify-center flex-wrap md:mt-0 mt-8 px-4 gap-4">
         {footerLinks.map((footerlink) => (
-          <div
-            key={footerlink.title}
-            className="flex flex-col my-4 min-w-[140px] sm:min-w-[160px] px-2"
-          >
+          <div key={footerlink.title} className="flex flex-col my-4 min-w-[120px] px-2">
             <h4 className="font-poppins font-medium text-sm sm:text-base md:text-lg leading-[1.5] text-white">
               {footerlink.title}
             </h4>
@@ -38,7 +36,7 @@ const Footer = () => (
                     index !== footerlink.links.length - 1 ? "mb-2 sm:mb-3" : "mb-0"
                   }`}
                 >
-                  {link.name}
+                  <a href={link.href || "#"}>{link.name}</a>
                 </li>
               ))}
             </ul>
@@ -49,28 +47,33 @@ const Footer = () => (
 
     <div className="w-full flex justify-between items-center md:flex-row flex-col pt-4 border-t-[1px] border-t-[#3F3E45] px-4">
       <p className="font-poppins font-normal text-center text-sm sm:text-base md:text-lg leading-[1.5] text-white">
-        Copyright Ⓒ 2025 Bank of Linea. All Rights Reserved.
-        
+        Copyright Ⓒ {new Date().getFullYear()} Bank of Linea. All Rights Reserved.
       </p>
 
       <p className="font-poppins font-normal text-center text-sm sm:text-base md:text-lg leading-[1.5] text-white">
-        
-        Contact: devs@bankoflinea.build
+        Contact: <a href="mailto:devs@bankoflinea.build">devs@bankoflinea.build</a>
       </p>
 
       <div className="flex flex-row md:mt-0 mt-4 gap-3 sm:gap-4">
-        {socialMedia.map((social, index) => (
-          <img
+        {socialMedia.map((social) => (
+          <a
             key={social.id}
-            src={social.icon}
-            alt={social.id}
-            className="w-8 h-8 sm:w-10 sm:h-10 object-contain cursor-pointer"
-            onClick={() => window.open(social.link)}
-          />
+            href={social.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="focus:outline-none focus:ring-2 focus:ring-secondary"
+          >
+            <img
+              src={social.icon}
+              alt={`${social.id} icon`}
+              className="w-8 h-8 sm:w-10 sm:h-10 object-contain cursor-pointer"
+              loading="lazy"
+            />
+          </a>
         ))}
       </div>
     </div>
-  </section>
+  </footer>
 );
 
 export default Footer;

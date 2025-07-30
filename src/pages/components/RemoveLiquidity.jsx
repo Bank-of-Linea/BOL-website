@@ -25,8 +25,8 @@ const RemoveLiquidity = ({ provider, signer, address }) => {
     const checkApproval = async () => {
       if (!amount || isNaN(amount) || Number(amount) <= 0) return setApproved(false);
       try {
-        const parsed = ethers.parseUnits(amount, 18);
-        const isOk = await isApprovedForLiquidity(signer, address, parsed);
+      //  const parsed = ethers.parseUnits(amount, 18);
+        const isOk = await isApprovedForLiquidity(signer, address, amount);
         setApproved(isOk);
       } catch (err) {
         console.error("Approval check failed:", err);
@@ -40,8 +40,8 @@ const RemoveLiquidity = ({ provider, signer, address }) => {
   const handleApprove = async () => {
     try {
       setLoading(true);
-      const parsed = ethers.parseUnits(amount, 18);
-      await approveLPToken(signer, parsed);
+     // const parsed = ethers.parseUnits(amount, 18);
+      await approveLPToken(signer, amount);
       alert("✅ Approved LP tokens!");
       setApproved(true);
     } catch (err) {
